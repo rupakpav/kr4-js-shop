@@ -3,168 +3,117 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-      Оформление заявки — mouseshop
-    </title>
-    <meta name="description" content="Учебная форма заявки mouseshop: выберите мышь и укажите контактные данные.">
+    <title>Оформление заявки — mouseshop</title>
+    <meta name="description" content="Учебная заявка на выбранную модель или товары из корзины.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Оформление заявки — mouseshop">
-    <meta property="og:description" content="Учебная форма заявки mouseshop: выберите мышь и укажите контактные данные.">
+    <meta property="og:description" content="Учебная заявка на выбранную модель или товары из корзины.">
     <meta property="og:image" content="images/g305-960.jpg">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <script src="js/main.js" defer>
-    </script>
+    <script src="js/data.js" defer></script>
+    <script src="js/storage.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/cart.js" defer></script>
+    <script src="js/validation.js" defer></script>
   </head>
   <body id="top">
     <a class="skip-link" href="#main">Перейти к основному содержимому</a>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-header__logo" href="index.html">
-          mouseshop
-        </a>
+        <div class="site-header__brand">
+          <a class="site-header__logo" href="index.html">mouse<span>shop</span></a>
+          <button class="button button--quiet theme-toggle" id="theme-toggle" type="button" hidden>Тёмная тема</button>
+        </div>
         <nav class="site-nav" aria-label="Основная навигация">
           <ul class="site-nav__list">
-            <li class="site-nav__item">
-              <a class="site-nav__link" href="index.html">
-                Главная
-              </a>
-            </li>
-            <li class="site-nav__item">
-              <a class="site-nav__link" href="catalog.html">
-                Каталог
-              </a>
-            </li>
-            <li class="site-nav__item">
-              <a class="site-nav__link" href="product.html">
-                Характеристики
-              </a>
-            </li>
-            <li class="site-nav__item">
-              <a class="site-nav__link site-nav__link--active" href="order.html" aria-current="page">
-                Заявка
-              </a>
-            </li>
-            <li class="site-nav__item">
-              <a class="site-nav__link" href="contacts.html">
-                Контакты
-              </a>
-            </li>
+            <li><a class="site-nav__link" href="index.html">Главная</a></li>
+            <li><a class="site-nav__link" href="catalog.html">Каталог</a></li>
+            <li><a class="site-nav__link" href="product.html">Характеристики</a></li>
+            <li><a class="site-nav__link" href="cart.html">Корзина <span class="cart-count" id="cart-count">0</span></a></li>
+            <li><a class="site-nav__link" href="order.html" aria-current="page">Заявка</a></li>
+            <li><a class="site-nav__link" href="contacts.html">Контакты</a></li>
           </ul>
         </nav>
       </div>
     </header>
     <main id="main" tabindex="-1">
       <nav class="breadcrumbs" aria-label="Хлебные крошки">
-        <a class="breadcrumbs__link" href="index.html">
-          Главная
-        </a>
-        <span class="breadcrumbs__current" aria-current="page">
-          Оформление заявки
-        </span>
+        <a href="index.html">Главная</a>
+        <span aria-current="page">Заявка</span>
       </nav>
-      <section class="section section--form">
-        <h1 class="section__title">
-          Оформление заявки
-        </h1>
-        <form class="order-form" action="#" method="post" novalidate>
-          <p class="order-form__hint">
-            Учебная форма: данные не отправляются на сервер. Все поля, кроме комментария, обязательны.
-          </p>
+      <section class="section section--form panel">
+        <h1>Оформление заявки</h1>
+        <p class="success-message" id="order-success" tabindex="-1" role="status" hidden></p>
+        <div class="order-summary" id="order-cart-summary" hidden>
+          <h2>Товары из корзины</h2>
+          <ul id="order-cart-items"></ul>
+          <p id="order-cart-discount"></p>
+          <p class="order-summary__total">Итого <strong id="order-cart-total"></strong></p>
+          <a href="cart.html">Изменить корзину</a>
+        </div>
+        <p class="order-form__hint" id="order-empty-cart" hidden>Корзина пуста. Выберите модель ниже или <a href="catalog.html">перейдите в каталог</a>.</p>
+        <form class="order-form" data-order-form method="post" novalidate hidden>
+          <p class="order-form__hint order-form__field--wide">Поля со звёздочкой обязательны. Заявка проверяется в браузере.</p>
           <div class="order-form__field order-form__field--wide">
-            <label class="order-form__label" for="order-product">
-              Товар
-            </label>
-            <select class="order-form__select" id="order-product" name="product" required aria-describedby="order-product-error">
-              <option value="">
-                Выберите мышь
-              </option>
-              <option value="g102">
-                Logitech G102
-              </option>
-              <option value="deathadder">
-                Razer DeathAdder
-              </option>
-              <option value="rival-3">
-                SteelSeries Rival 3
-              </option>
-              <option value="g305">
-                Logitech G305
-              </option>
-              <option value="basilisk-v3">
-                Razer Basilisk V3
-              </option>
-              <option value="haste-2">
-                HyperX Pulsefire Haste 2
-              </option>
+            <label for="order-product">Модель *</label>
+            <select class="field" id="order-product" name="product" required aria-describedby="order-product-error">
+              <option value="">Выберите мышь</option>
             </select>
-            <p class="order-form__error" id="order-product-error" hidden></p>
+            <p class="field-error" id="order-product-error" hidden></p>
           </div>
           <div class="order-form__field">
-            <label class="order-form__label" for="order-name">
-              Имя
-            </label>
-            <input class="order-form__input" id="order-name" name="name" autocomplete="given-name" minlength="2" required aria-describedby="order-name-error">
-            <p class="order-form__error" id="order-name-error" hidden></p>
+            <label for="order-name">Имя *</label>
+            <input class="field" id="order-name" name="name" autocomplete="given-name" minlength="2" maxlength="80" required aria-describedby="order-name-error">
+            <p class="field-error" id="order-name-error" hidden></p>
           </div>
           <div class="order-form__field">
-            <label class="order-form__label" for="order-email">
-              E-mail
-            </label>
-            <input class="order-form__input" id="order-email" name="email" type="email" autocomplete="email" required aria-describedby="order-email-error">
-            <p class="order-form__error" id="order-email-error" hidden></p>
+            <label for="order-email">E-mail *</label>
+            <input class="field" id="order-email" name="email" type="email" autocomplete="email" maxlength="160" required aria-describedby="order-email-error">
+            <p class="field-error" id="order-email-error" hidden></p>
           </div>
           <div class="order-form__field">
-            <label class="order-form__label" for="order-phone">
-              Телефон
-            </label>
-            <input class="order-form__input" id="order-phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (900) 000-00-00" pattern="\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}" aria-describedby="order-phone-hint order-phone-error" required>
-            <small class="order-form__hint" id="order-phone-hint">
-              Формат: +7 (900) 000-00-00
-            </small>
-            <p class="order-form__error" id="order-phone-error" hidden></p>
+            <label for="order-phone">Телефон *</label>
+            <input class="field" id="order-phone" name="phone" type="tel" autocomplete="tel" placeholder="+7 (900) 000-00-00" maxlength="24" required aria-describedby="order-phone-hint order-phone-error">
+            <small id="order-phone-hint" class="field-hint">11 цифр, начиная с 7 или 8</small>
+            <p class="field-error" id="order-phone-error" hidden></p>
+          </div>
+          <div class="order-form__field">
+            <label for="order-date">Желаемая дата (необязательно)</label>
+            <input class="field" id="order-date" name="date" type="date" aria-describedby="order-date-error">
+            <p class="field-error" id="order-date-error" hidden></p>
           </div>
           <div class="order-form__field order-form__field--wide">
-            <label class="order-form__label" for="order-comment">
-              Комментарий (необязательно)
-            </label>
-            <textarea class="order-form__textarea" id="order-comment" name="comment" rows="4"></textarea>
+            <label for="order-comment">Комментарий (необязательно)</label>
+            <textarea class="field" id="order-comment" name="comment" rows="3" maxlength="300" aria-describedby="order-comment-count order-comment-error"></textarea>
+            <small class="field-hint" id="order-comment-count" data-comment-count>0 / 300</small>
+            <p class="field-error" id="order-comment-error" hidden></p>
           </div>
           <div class="order-form__field order-form__field--wide">
-            <input class="order-form__checkbox" id="order-agreement" name="agreement" type="checkbox" required aria-describedby="order-agreement-error">
-            <label class="order-form__label order-form__label--inline" for="order-agreement">
-              Я согласен на обработку данных
+            <label class="check-label">
+              <input id="order-agreement" name="agreement" type="checkbox" required aria-describedby="order-agreement-error">
+              <span>Согласен на обработку данных для учебной заявки *</span>
             </label>
-            <p class="order-form__error" id="order-agreement-error" hidden></p>
+            <p class="field-error" id="order-agreement-error" hidden></p>
           </div>
-          <div class="order-form__actions">
-            <button class="button button--primary" type="submit">
-              Отправить заявку
-            </button>
+          <p class="order-form__feedback field-error order-form__field--wide" role="status"></p>
+          <div class="action-row order-form__field--wide">
+            <button class="button button--primary" type="submit">Подготовить заявку</button>
+            <button class="button button--secondary" type="reset">Очистить</button>
           </div>
         </form>
+        <noscript><p>Включите JavaScript для проверки заявки.</p></noscript>
       </section>
-      <p class="success-message" role="status" tabindex="-1" hidden>
-        Заявка проверена успешно. Это учебная демонстрация: данные не отправлялись.
-      </p>
     </main>
-    <footer class="site-footer" id="contacts">
-      <p class="site-footer__text">
-        © 2026 mouseshop · Учебный магазин компьютерных мышей
-      </p>
-      <p class="site-footer__text">
-        Все цены учебные. Оформление заявки демонстрационное.
-      </p>
-      <a href="contacts.html">
-        Контакты
-      </a>
-      ·
-      <a href="order.html">
-        Оставить заявку
-      </a>
-      <a class="button button--primary back-to-top" href="#top">
-        Наверх ↑
-      </a>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p><strong>mouseshop</strong> · Учебный магазин</p>
+        <div class="site-footer__links">
+          <a href="contacts.html">Контакты</a>
+          <a href="#top">Наверх ↑</a>
+        </div>
+      </div>
     </footer>
+    <p id="shop-notice" class="shop-notice" role="status"></p>
   </body>
 </html>
